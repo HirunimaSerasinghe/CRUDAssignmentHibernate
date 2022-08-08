@@ -10,3 +10,4 @@ public interface StudentDaoInterface {
     Student getStudent(int id);
     List<Student> getAllStudent();
 }
+//commit
