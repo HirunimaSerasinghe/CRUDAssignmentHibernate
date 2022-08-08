@@ -11,16 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.studentmanagement.model.*;
-import net.studentmanagement.dao.*;
+import net.studentmanagement.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @WebServlet("/")
 public class web extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private StudentDao studentDao;
 
-    public void init() {
-        studentDao = new StudentDao();
-    }
+    @Autowired
+    private StudentService studentService;
+
+   /* public void init() {
+        studentService = new StudentService;
+    }*/
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -63,7 +66,7 @@ public class web extends HttpServlet {
         String email = request.getParameter("email");
         String age = request.getParameter("age");
         Student newStudent = new Student(name, email, age);
-        studentDao.saveStudent(newStudent);
+        studentService.saveStudent(newStudent);
         response.sendRedirect("list");
     }
 
@@ -74,21 +77,21 @@ public class web extends HttpServlet {
         String email = request.getParameter("email");
         String age = request.getParameter("age");
         Student book = new Student(id, name, email, age);
-        studentDao.updateStudent(book);
+        studentService.updateStudent(book);
         response.sendRedirect("list");
     }
 
     private void deleteStudent(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        studentDao.deleteStudent(id);
+        studentService.deleteStudent(id);
         response.sendRedirect("list");
 
     }
 
     private void listStudent(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Student> listStudent = studentDao.getAllStudents();
+        List<Student> listStudent = studentService.getAllStudent();
         request.setAttribute("listStudent", listStudent);
         RequestDispatcher dispatcher = request.getRequestDispatcher("student-list.jsp");
         dispatcher.forward(request, response);
@@ -104,7 +107,7 @@ public class web extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Student existingStudent = studentDao.getStudent(id);
+        Student existingStudent = studentService.getStudent(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("student-form.jsp");
         request.setAttribute("student", existingStudent);
         dispatcher.forward(request, response);
