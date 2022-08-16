@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>CRUD Application</title>
@@ -54,18 +54,20 @@
                     </caption>
 
                     <c:if test="${student != null}">
-                        <input type="hidden" name="id" value="<c:out value='${student.id}' />" />
+                        <input type="hidden" name="id" value="<c:out value='${student.id}' />"/>
                     </c:if>
 
                     <fieldset class="form-group">
                         <label>Student Name</label> <input type="text"
-                                                           value="<c:out value='${student.name}' />" class="form-control"
+                                                           value="<c:out value='${student.name}' />"
+                                                           class="form-control"
                                                            name="name" required="required">
                     </fieldset>
 
                     <fieldset class="form-group">
                         <label>Student Email</label> <input type="text"
-                                                            value="<c:out value='${student.email}' />" class="form-control"
+                                                            value="<c:out value='${student.email}' />"
+                                                            class="form-control"
                                                             name="email">
                     </fieldset>
 

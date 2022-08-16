@@ -1,21 +1,47 @@
-package net.studentmanagement.dao;
+package net.studentmanagement.dao.impl;
 
+import net.studentmanagement.dao.StudentDAO;
 import net.studentmanagement.model.Student;
-import net.studentmanagement.utl.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-//import net.studentmanagement.dao.sessionInit;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public class StudentDaoImpl implements StudentDaoInterface {
+@Repository
+public class StudentDAOImpl implements StudentDAO {
 
-    //sessionInit sInit = new sessionInit();
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    public StudentDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     @Override
     public void saveStudent(Student student) {
-        Transaction transaction = null;
+//        Transaction transaction = null;
+        try (Session session = getSession()) {
+//            transaction = session.beginTransaction();
+            session.save(student);
+//            transaction.commit();
+        } catch (Exception e) {
+//            if (transaction != null) {
+//                transaction.rollback();
+//            }
+            e.printStackTrace();
+        }
+    }
+
+    /*public void saveStudent(Student student) {
+
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(student);
@@ -26,12 +52,12 @@ public class StudentDaoImpl implements StudentDaoInterface {
             }
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public void updateStudent(Student student) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = getSession()) {
             transaction = session.beginTransaction();
             session.update(student);
             transaction.commit();
@@ -46,7 +72,7 @@ public class StudentDaoImpl implements StudentDaoInterface {
     @Override
     public void deleteStudent(int id) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = getSession()) {
             transaction = session.beginTransaction();
             Student student = session.get(Student.class, id);
             if (student != null) {
@@ -54,7 +80,8 @@ public class StudentDaoImpl implements StudentDaoInterface {
                 System.out.println("user is deleted");
             }
 
-            transaction.commit(); } catch (Exception e) {
+            transaction.commit();
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -66,7 +93,7 @@ public class StudentDaoImpl implements StudentDaoInterface {
     public Student getStudent(int id) {
         Transaction transaction = null;
         Student student = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = getSession()) {
             transaction = session.beginTransaction();
             student = session.get(Student.class, id);
             transaction.commit();
@@ -82,8 +109,8 @@ public class StudentDaoImpl implements StudentDaoInterface {
     @Override
     public List<Student> getAllStudent() {
         Transaction transaction = null;
-        List < Student > listOfStudents = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        List<Student> listOfStudents = null;
+        try (Session session = getSession()) {
             transaction = session.beginTransaction();
             Query query = session.createQuery("FROM Student");
             listOfStudents = query.list();
