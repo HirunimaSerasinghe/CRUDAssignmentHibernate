@@ -1,0 +1,8 @@
+net\studentmanagement\model\Student.class
+net\studentmanagement\utl\HibernateUtil.class
+net\studentmanagement\dao\impl\StudentDAOImpl.class
+net\studentmanagement\utl\sessionInit.class
+net\studentmanagement\controller\StudentController.class
+net\studentmanagement\service\StudentServiceImpl.class
+net\studentmanagement\dao\StudentDAO.class
+net\studentmanagement\service\StudentService.class
