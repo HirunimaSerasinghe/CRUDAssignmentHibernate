@@ -4,8 +4,6 @@ import net.studentmanagement.dao.StudentDAO;
 import net.studentmanagement.model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,8 +25,12 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public void saveStudent(Student student) {
+
+        Session session = this.getSession();
+        session.persist(student);
+
 //        Transaction transaction = null;
-        try (Session session = getSession()) {
+        /*try (Session session = getSession()) {
 //            transaction = session.beginTransaction();
             session.save(student);
 //            transaction.commit();
@@ -37,41 +39,38 @@ public class StudentDAOImpl implements StudentDAO {
 //                transaction.rollback();
 //            }
             e.printStackTrace();
-        }
+        }*/
     }
-
-    /*public void saveStudent(Student student) {
-
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(student);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-    }*/
 
     @Override
     public void updateStudent(Student student) {
-        Transaction transaction = null;
-        try (Session session = getSession()) {
-            transaction = session.beginTransaction();
-            session.update(student);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
+
+        Session session = this.getSession();
+        session.update(student);
+
+//        Transaction transaction = null;
+//        try (Session session = getSession()) {
+//            transaction = session.beginTransaction();
+//            session.update(student);
+//            transaction.commit();
+//        } catch (Exception e) {
+//            if (transaction != null) {
+//                transaction.rollback();
+//            }
+//            e.printStackTrace();
+//        }
     }
 
     @Override
     public void deleteStudent(int id) {
-        Transaction transaction = null;
+
+        Session session = this.getSession();
+        Student student = (Student) session.load(Student.class, id);
+        if (null != student) {
+            session.delete(student);
+        }
+
+        /*Transaction transaction = null;
         try (Session session = getSession()) {
             transaction = session.beginTransaction();
             Student student = session.get(Student.class, id);
@@ -86,12 +85,17 @@ public class StudentDAOImpl implements StudentDAO {
                 transaction.rollback();
             }
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public Student getStudent(int id) {
-        Transaction transaction = null;
+
+        Session session = this.getSession();
+        Student student = (Student) session.load(Student.class, id);
+        return student;
+
+        /*Transaction transaction = null;
         Student student = null;
         try (Session session = getSession()) {
             transaction = session.beginTransaction();
@@ -103,12 +107,18 @@ public class StudentDAOImpl implements StudentDAO {
             }
             e.printStackTrace();
         }
-        return student;
+        return student;*/
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Student> getAllStudent() {
-        Transaction transaction = null;
+
+        Session session = this.getSession();
+        List<Student> studentList = session.createQuery("from Student").list();
+        return studentList;
+
+        /*Transaction transaction = null;
         List<Student> listOfStudents = null;
         try (Session session = getSession()) {
             transaction = session.beginTransaction();
@@ -121,7 +131,7 @@ public class StudentDAOImpl implements StudentDAO {
             }
             e.printStackTrace();
         }
-        return listOfStudents;
+        return listOfStudents;*/
     }
-    //commit
+
 }

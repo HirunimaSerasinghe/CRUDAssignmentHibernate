@@ -1,8 +1,8 @@
 E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\controller\StudentController.java
 E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\service\StudentService.java
-E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\service\StudentServiceImpl.java
+E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\config\HibernateConfiguration.java
+E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\config\ApplicationConfig.java
+E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\service\impl\StudentServiceImpl.java
 E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\dao\impl\StudentDAOImpl.java
-E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\utl\HibernateUtil.java
-E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\utl\sessionInit.java
 E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\dao\StudentDAO.java
 E:\CRUDAssignmentHibernate\src\main\java\net\studentmanagement\model\Student.java
