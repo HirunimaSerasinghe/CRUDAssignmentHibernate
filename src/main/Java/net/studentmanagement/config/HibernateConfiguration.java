@@ -53,4 +53,5 @@ public class HibernateConfiguration {
         return txManager;
     }
 }
+//commit
 
