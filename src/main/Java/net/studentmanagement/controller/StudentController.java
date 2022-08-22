@@ -33,27 +33,27 @@ public class StudentController {
     public String updateStudent(@RequestParam("id") int id, Model model) {
         Student updateStudent = studentService.getStudent(id);
         model.addAttribute("student", updateStudent);
-        return "student-list";
+        return "student-form";
     }
 
     @GetMapping("/delete")
     public String deleteStudent(@RequestParam("id") int id) {
         studentService.deleteStudent(id);
-        return ("redirect:/list");
+        return "redirect:/list";
     }
 
-   /* @GetMapping("/list")
+    @GetMapping("/list")
     public String listStudent(Model model){
-        List <Student> ListStudent = studentService.getAllStudent();
-        model.addAllAttributes("student", ListStudent);
+        List <Student> listStudent = studentService.getAllStudent();
+        model.addAttribute ("listStudent", listStudent);
         return "student-list";
     }
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
         Student student = new Student();
-        model.addAllAttributes("student", student);
+        model.addAttribute("student", student);
         return "student-form";
-    }*/
+    }
 }
 //commit
