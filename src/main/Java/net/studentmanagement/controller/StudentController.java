@@ -29,7 +29,7 @@ public class StudentController {
         return ("redirect:/list");
     }
 
-    @GetMapping ("/update")
+    @GetMapping ("/edit")
     public String updateStudent(@RequestParam("id") int id, Model model) {
         Student updateStudent = studentService.getStudent(id);
         model.addAttribute("student", updateStudent);
