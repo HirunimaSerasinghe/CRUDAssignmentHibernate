@@ -1,32 +1,32 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       ">
 
     <context:component-scan base-package="net.studentmanagement.*"/>
+    <!--<mvc:annotation-driven/>-->
+    <context:annotation-config />
 
-    <!--<context:property-placeholder location="classpath:config.properties" />-->
-
-    <mvc:annotation-driven/>
-
+    <!--Internal View Resolver-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <!--Database Properties-->
     <bean id="dbProperties"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-
         <property name="location" value="classpath:db.properties" />
-
     </bean>
 
+    <!--Persistence Annotation Bean Post Processor-->
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+    <!--Database Source-->
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
         <property name="driverClassName" value="${driverClassName}"/>
         <property name="url" value="${url}"/>
@@ -34,24 +34,36 @@
         <property name="password" value="${password}"/>
     </bean>
 
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+    <!--Entity Manager Factory-->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="TestPersistence" />
         <property name="packagesToScan" value="${package}"/>
-        <property name="hibernateProperties">
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="true" />
+            </bean>
+        </property>
+
+        <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">${dialect}</prop>
                 <prop key="hibernate.show_sql">${showSQL}</prop>
+                <prop key="hibernate.format_sql">${format_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hbm2ddl}</prop>
             </props>
         </property>
+
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <!--Transaction Manager-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
-
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
 
 </beans>
